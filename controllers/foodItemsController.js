@@ -14,6 +14,7 @@ export const createFoodItem = async (req, res, next) => {
       const newFI = await FoodItems.create({
         name,
         price,
+        image,
         menuID,
       });
 
