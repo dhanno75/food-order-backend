@@ -95,7 +95,7 @@ export const getCart = async (req, res, next) => {
 // Remove items from the cart
 export const removeFoodItemsFromCart = async (req, res, next) => {
   const userID = req.user._id;
-  const foodItemsID = req.params.foodItemsID;
+  const foodItemsID = req.query.foodItemsID;
 
   try {
     let cart = await Cart.findOne({ userID });
@@ -104,7 +104,7 @@ export const removeFoodItemsFromCart = async (req, res, next) => {
     );
 
     if (foodItemIndex > -1) {
-      let foodItem = cart.products[foodItemIndex];
+      let foodItem = cart.foodItems[foodItemIndex];
       cart.totalCost -= foodItem.quantity * foodItem.price;
 
       if (cart.totalCost < 0) {
@@ -116,6 +116,7 @@ export const removeFoodItemsFromCart = async (req, res, next) => {
         return acc + el.quantity * el.price;
       }, 0);
       cart = await cart.save();
+      console.log(cart);
       res.status(200).json({
         status: "success",
         data: cart,
